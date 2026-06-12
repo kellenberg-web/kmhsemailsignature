@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Signature Generator | Kellenberg Memorial High School</title>
+    <title>Email Signature Generator | Kellenberg Memorial</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -330,10 +330,10 @@
 </head>
 <body>
     <header class="header">
-        <img src="https://raw.githubusercontent.com/harnischllc/kellenberg-signature-assets/main/KMHSseal.png" alt="Kellenberg Memorial High School" class="header-logo">
+        <img src="https://raw.githubusercontent.com/harnischllc/kellenberg-signature-assets/main/KMHSseal.png" alt="Kellenberg Memorial" class="header-logo">
         <div class="header-text">
             <h1>Email Signature Generator</h1>
-            <p>Kellenberg Memorial High School</p>
+            <p>Kellenberg Memorial</p>
         </div>
     </header>
 
@@ -554,7 +554,7 @@
 <table cellpadding="0" cellspacing="0" border="0" style="font-family:'Noto Sans',Arial,sans-serif;font-size:14px;line-height:1.5;color:#333333;">
     <tr>
         <td style="padding-right:15px;vertical-align:top;border-right:3px solid ${CONFIG.goldColor};">
-            <img src="${logo.url}" alt="Kellenberg Memorial High School" width="${logo.width}" style="display:block;border:0;">
+            <img src="${logo.url}" alt="Kellenberg Memorial" width="${logo.width}" style="display:block;border:0;">
         </td>
         <td style="padding-left:15px;vertical-align:top;">
             <table cellpadding="0" cellspacing="0" border="0">
@@ -565,7 +565,7 @@
                 </tr>
                 ${position ? `<tr><td style="color:#333333;padding-bottom:6px;">${position}</td></tr>` : ''}
                 <tr>
-                    <td style="font-weight:bold;color:${CONFIG.primaryColor};padding-bottom:2px;">Kellenberg Memorial High School</td>
+                    <td style="font-weight:bold;color:${CONFIG.primaryColor};padding-bottom:2px;">Kellenberg Memorial</td>
                 </tr>
                 <tr>
                     <td style="color:#666666;font-size:13px;">${school.address}</td>
@@ -613,7 +613,7 @@
             let lines = ['--'];
             if (nameWithCreds) lines.push(nameWithCreds);
             if (position) lines.push(position);
-            lines.push('Kellenberg Memorial High School');
+            lines.push('Kellenberg Memorial');
             lines.push(school.address);
             lines.push(school.cityStateZip);
             lines.push(`P: ${phoneWithExt}`);
