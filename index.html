@@ -52,7 +52,7 @@
         }
 
         .header-logo {
-            width: 56px;
+            width: 80px;
             height: auto;
         }
 
@@ -128,7 +128,7 @@
             color: #c00;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 0.65rem 0.85rem;
             border: 1px solid var(--border);
@@ -138,13 +138,19 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus, select:focus {
+        textarea {
+            resize: vertical;
+            min-height: 4.5rem;
+            line-height: 1.4;
+        }
+
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(44, 62, 148, 0.15);
         }
 
-        input::placeholder {
+        input::placeholder, textarea::placeholder {
             color: #999;
         }
 
@@ -374,7 +380,7 @@
 
                     <div class="form-group">
                         <label for="position">Title / Position <span class="required">*</span></label>
-                        <input type="text" id="position" placeholder="English Department, Campus Ministry, etc." required oninput="updatePreview()">
+                        <textarea id="position" rows="3" placeholder="English Department, Campus Ministry, etc.&#10;One title per line." required oninput="updatePreview()"></textarea>
                     </div>
 
                     <hr class="divider">
@@ -425,12 +431,6 @@
                             </svg>
                             Copy Signature
                         </button>
-                        <button type="button" class="btn btn-secondary" onclick="downloadSignature()">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            Download HTML
-                        </button>
                     </div>
                 </div>
             </div>
@@ -455,7 +455,7 @@
 
             <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-muted);"><strong>On your phone:</strong> the Gmail app has its own mobile signature setting. If you don't create one in the app, messages sent from your phone use the signature you set up on your computer.</p>
 
-            <p style="font-size: 0.9rem; color: var(--text-muted);"><strong>If the Copy button doesn't work:</strong> click <strong>Download HTML</strong>, open the downloaded file in your browser, select everything (Ctrl+A or Cmd+A), copy it, and paste that into the Gmail signature box.</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);"><strong>If the Copy button doesn't work:</strong> some embedded pages block clipboard access. <a href="#" onclick="window.open(location.href, '_blank'); return false;">Open this page in its own tab</a> and copy from there.</p>
         </div>
     </main>
 
@@ -471,8 +471,8 @@
 
         const CONFIG = {
             logos: {
-                anniversary: { url: `${ASSETS}/KM40th.png`, width: 110 },
-                seal: { url: `${ASSETS}/KMHSseal.png`, width: 80 }
+                anniversary: { url: `${ASSETS}/KM40th.png`, width: 160 },
+                seal: { url: `${ASSETS}/KMHSseal.png`, width: 110 }
             },
             primaryColor: '#2c3e94',
             goldColor: '#ffba00',
@@ -525,12 +525,21 @@
             return CONFIG.logos[selected ? selected.value : 'anniversary'];
         }
 
+        // Escape user input so &, <, > and quotes can't break the signature HTML
+        function esc(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function getPositionLines() {
+            return inputs.position.value.split('\n').map(l => l.trim()).filter(Boolean);
+        }
+
         function generateSignatureHTML() {
             const honorific = inputs.honorific.value;
             const firstName = inputs.firstName.value.trim();
             const lastName = inputs.lastName.value.trim();
             const credentials = inputs.credentials.value.trim();
-            const position = inputs.position.value.trim();
+            const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
             const logo = getSelectedLogo();
@@ -539,6 +548,7 @@
             const fullName = [honorific, firstName, lastName].filter(Boolean).join(' ');
             const nameWithCreds = credentials ? `${fullName}, ${credentials}` : fullName;
             const phoneWithExt = extension ? `${school.phone} ext. ${extension}` : school.phone;
+            const positionHTML = positionLines.map(esc).join('<br>');
 
             // Build websites HTML
             const websitesHTML = CONFIG.websites.map(w =>
@@ -554,16 +564,16 @@
 <table cellpadding="0" cellspacing="0" border="0" style="font-family:'Noto Sans',Arial,sans-serif;font-size:14px;line-height:1.5;color:#333333;">
     <tr>
         <td style="padding-right:15px;vertical-align:top;border-right:3px solid ${CONFIG.goldColor};">
-            <img src="${logo.url}" alt="Kellenberg Memorial" width="${logo.width}" style="display:block;border:0;">
+            <a href="${CONFIG.websites[0].url}" target="_blank" style="text-decoration:none;"><img src="${logo.url}" alt="Kellenberg Memorial" width="${logo.width}" style="display:block;border:0;"></a>
         </td>
         <td style="padding-left:15px;vertical-align:top;">
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td style="font-weight:bold;font-size:16px;color:${CONFIG.primaryColor};padding-bottom:2px;">
-                        ${nameWithCreds || 'Your Name'}
+                        ${esc(nameWithCreds) || 'Your Name'}
                     </td>
                 </tr>
-                ${position ? `<tr><td style="color:#333333;padding-bottom:6px;">${position}</td></tr>` : ''}
+                ${positionHTML ? `<tr><td style="color:#333333;padding-bottom:6px;">${positionHTML}</td></tr>` : ''}
                 <tr>
                     <td style="font-weight:bold;color:${CONFIG.primaryColor};padding-bottom:2px;">Kellenberg Memorial</td>
                 </tr>
@@ -575,10 +585,10 @@
                 </tr>
                 <tr>
                     <td style="font-size:13px;">
-                        <strong>P:</strong> <a href="tel:${school.phone.replace(/[^\d]/g, '')}" target="_blank" style="color:#333333;text-decoration:none;">${phoneWithExt}</a>
+                        <strong>P:</strong> <a href="tel:${school.phone.replace(/[^\d]/g, '')}" target="_blank" style="color:#333333;text-decoration:none;">${esc(phoneWithExt)}</a>
                     </td>
                 </tr>
-                ${email ? `<tr><td style="font-size:13px;"><strong>E:</strong> <a href="mailto:${email}" target="_blank" style="color:${CONFIG.primaryColor};text-decoration:none;">${email}</a></td></tr>` : ''}
+                ${email ? `<tr><td style="font-size:13px;"><strong>E:</strong> <a href="mailto:${esc(email)}" target="_blank" style="color:${CONFIG.primaryColor};text-decoration:none;">${esc(email)}</a></td></tr>` : ''}
                 <tr>
                     <td style="font-size:13px;padding-bottom:8px;">
                         <strong>W:</strong> ${websitesHTML}
@@ -601,7 +611,7 @@
             const firstName = inputs.firstName.value.trim();
             const lastName = inputs.lastName.value.trim();
             const credentials = inputs.credentials.value.trim();
-            const position = inputs.position.value.trim();
+            const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
             const school = CONFIG.school;
@@ -612,7 +622,7 @@
 
             let lines = ['--'];
             if (nameWithCreds) lines.push(nameWithCreds);
-            if (position) lines.push(position);
+            positionLines.forEach(l => lines.push(l));
             lines.push('Kellenberg Memorial');
             lines.push(school.address);
             lines.push(school.cityStateZip);
@@ -662,35 +672,10 @@
                 }
             } catch (err) {
                 console.error('Copy failed:', err);
-                showToast('Copy failed. Try downloading instead.');
+                showToast('Copy failed. Open this page in its own tab and try again.');
             }
 
             selection.removeAllRanges();
-        }
-
-        function downloadSignature() {
-            const html = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Email Signature</title>
-</head>
-<body>
-${generateSignatureHTML()}
-</body>
-</html>`;
-
-            const blob = new Blob([html], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'signature.htm';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            showToast('Signature downloaded!');
         }
 
         function showToast(message) {

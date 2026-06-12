@@ -9,7 +9,8 @@ A client-side email signature generator for Kellenberg Memorial High School facu
 - Optional credentials field
 - Optional extension on the main line (516) 292-0200
 - Auto-includes kellenberg.org and social media icons (Facebook, Instagram, YouTube)
-- Copy to clipboard or download HTML file
+- Logo links to kellenberg.org in the signature
+- One-click copy to clipboard
 - Live preview
 - Gmail setup instructions built into the page
 
@@ -22,7 +23,7 @@ The page is a single self-contained `index.html`. It is intended to live on the 
 
 Pasting the full file into an Embed code block also works if it stays under the embed size limit.
 
-Note: some Google Sites embeds block clipboard access inside the iframe. The page includes a Download HTML fallback with instructions, but test the Copy button in the embedded context before rollout.
+Note: some Google Sites embeds block clipboard access inside the iframe. The page's fallback note links users to open it in its own tab, but test the Copy button in the embedded context before rollout.
 
 ## Image hosting (important)
 
