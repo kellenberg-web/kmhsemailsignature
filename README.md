@@ -27,11 +27,11 @@ Note: some Google Sites embeds block clipboard access inside the iframe. The pag
 
 ## Image hosting (important)
 
-Gmail strips base64/data-URI images from signatures, so every image in the signature must be a public HTTPS URL. All logos and social icons are hosted in the public assets repo:
+Gmail strips base64/data-URI images from signatures, so every image in the signature must be a public HTTPS URL. All logos and social icons are hosted in the kellenberg.org WordPress media library (S3-backed `s3.amazonaws.com/org.kellenberg.www-media` URLs).
 
-`https://github.com/harnischllc/kellenberg-signature-assets`
+Do not delete those media files in WordPress: every installed signature points at them permanently. Re-uploading a file in WordPress creates a new timestamped URL, so update the `CONFIG` paths in `index.html` when artwork changes (existing signatures keep the old file until their owners re-copy).
 
-referenced via `raw.githubusercontent.com` URLs. Keep that repo public or signature images will break in recipients' inboxes.
+The previous host, the public repo `https://github.com/harnischllc/kellenberg-signature-assets`, remains as the asset source/backup.
 
 ## Configuration
 
@@ -43,7 +43,7 @@ The `CONFIG` object at the top of the `<script>` section in `index.html` contain
 - Social media links and icon URLs
 - Brand colors
 
-Hosted assets: `KM40th.png` (40th Anniversary, displays 110px wide), `KMHSseal.png` (seal, displays 80px wide), `KMfirebird.png` (KM athletic mark, spare), and the three social icons. All are trimmed and saved at 2x display size for retina.
+Hosted assets: `KM40th.png` (40th Anniversary, displays 160px wide), `KMHSseal.png` (seal, displays 110px wide), `KMfirebird.png` (KM athletic mark, spare), and the three social icons. All are trimmed and saved at 2x display size for retina.
 
 ## Customization
 
@@ -63,7 +63,7 @@ The signature itself uses `CONFIG.primaryColor` and `CONFIG.goldColor`.
 
 ### Social Icons
 
-Icons are 80x80 PNGs in Kellenberg blue (#2c3e94), displayed at 20x20, hosted in the assets repo. To change them, update the `CONFIG.socials` icon URLs.
+Icons are 80x80 PNGs in Kellenberg blue (#2c3e94), displayed at 20x20, hosted in the WordPress media library. To change them, update the `CONFIG.socials` icon URLs.
 
 ## Browser Support
 
