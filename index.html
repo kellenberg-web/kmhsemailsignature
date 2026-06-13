@@ -321,6 +321,42 @@
             margin-bottom: 0.5rem;
         }
 
+        .faq-item {
+            margin-bottom: 1.4rem;
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-q {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .faq-a {
+            color: var(--text);
+        }
+
+        .bottom-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 2rem;
+        }
+
+        .bottom-split .instructions {
+            margin-top: 0;
+        }
+
+        @media (max-width: 900px) {
+            .bottom-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .hidden-signature {
             position: absolute;
             left: -9999px;
@@ -440,10 +476,11 @@
             </div>
         </div>
 
+        <div class="bottom-split">
         <div class="instructions">
             <h3>How to Add Your Signature in Gmail</h3>
 
-            <p style="margin-bottom: 1rem;"><strong>Step 1:</strong> Click <strong>Copy Signature</strong> above. You may need to grant your browser permission to access the clipboard.</p>
+            <p style="margin-bottom: 1rem;"><strong>Step 1:</strong> On a computer, click <strong>Copy Signature</strong> above. The first time, your browser may ask for permission to copy. Click <strong>Allow</strong>.</p>
 
             <p style="margin-bottom: 0.5rem;"><strong>Step 2:</strong> Add it to Gmail:</p>
 
@@ -457,9 +494,41 @@
                 </ol>
             </div>
 
-            <p style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-muted);"><strong>On your phone:</strong> the Gmail app has its own mobile signature setting. If you don't create one in the app, messages sent from your phone use the signature you set up on your computer.</p>
+        </div>
 
-            <p style="font-size: 0.9rem; color: var(--text-muted);"><strong>If the Copy button doesn't work:</strong> some embedded pages block clipboard access. <a href="#" onclick="window.open(location.href, '_blank'); return false;">Open this page in its own tab</a> and copy from there.</p>
+        <div class="instructions">
+            <h3>Common Questions</h3>
+
+            <div class="faq-item">
+                <p class="faq-q">Should I set this up on my computer or my phone?</p>
+                <p class="faq-a">On a computer. The full signature, with the school logo, only works when you set it up on a computer. Do the steps above one time on a computer and every email you send from that computer will have it.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">Will this signature show up on emails I send from my iPhone?</p>
+                <p class="faq-a">Not on its own. The Mail app on your iPhone keeps its own signature, separate from the one above, and it can only hold plain text. That means your name and title will show, but not the logo or the colors. To set a simple one, open the iPhone <strong>Settings</strong> app, tap <strong>Apps</strong>, then <strong>Mail</strong>, then <strong>Signature</strong> (on an older iPhone it is simply <strong>Settings</strong>, then <strong>Mail</strong>, then <strong>Signature</strong>). Type a few lines such as your name, your title, and Kellenberg Memorial.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">I clicked Copy Signature and nothing seemed to happen.</p>
+                <p class="faq-a">It most likely worked anyway. Go to Gmail and paste to check before trying again. If your browser asked for permission, be sure you clicked <strong>Allow</strong>. If it still will not copy, click <a href="#" onclick="window.open(location.href, '_blank'); return false;">open this page in its own tab</a> and copy from there.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">When I pasted, the logo and colors were gone.</p>
+                <p class="faq-a">That happens when the signature is pasted on a phone, or into the wrong box. Set it up on a computer, in the Gmail signature box you reach through <strong>Settings</strong>, then <strong>See all settings</strong>, then <strong>General</strong>, then <strong>Signature</strong>. Paste with the keyboard: hold <strong>Ctrl</strong> and press <strong>V</strong> on Windows, or hold <strong>Command</strong> and press <strong>V</strong> on a Mac.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">My title, extension, or email changed. Do I have to redo it?</p>
+                <p class="faq-a">Yes, and it only takes a minute. Come back to this page, type in your new information, click <strong>Copy Signature</strong>, and paste it over your old signature in Gmail using the same steps. Click <strong>Save Changes</strong> when you finish.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">It still is not showing up on my emails.</p>
+                <p class="faq-a">Check two things in the Gmail signature settings. First, under <strong>Signature defaults</strong>, choose your Kellenberg signature for new emails and for replies. Second, scroll to the very bottom of the settings page and click <strong>Save Changes</strong>.</p>
+            </div>
+        </div>
         </div>
     </main>
 
