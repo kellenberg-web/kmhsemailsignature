@@ -76,15 +76,9 @@
 
         .layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 2rem;
             align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .layout {
-                grid-template-columns: 1fr;
-            }
         }
 
         .card {
@@ -154,10 +148,16 @@
             color: #999;
         }
 
-        .form-row-3 {
+        .form-row-name {
             display: grid;
-            grid-template-columns: 100px 1fr 1fr;
+            grid-template-columns: 100px 1fr 70px 1fr;
             gap: 1rem;
+        }
+
+        @media (max-width: 540px) {
+            .form-row-name {
+                grid-template-columns: 100px 1fr;
+            }
         }
 
         .option-section {
@@ -348,7 +348,7 @@
             <div class="card">
                 <div class="card-header">Your Information</div>
                 <div class="card-body">
-                    <div class="form-row-3">
+                    <div class="form-row-name">
                         <div class="form-group">
                             <label for="honorific">Title <span class="required">*</span></label>
                             <select id="honorific" required onchange="updatePreview()">
@@ -368,6 +368,10 @@
                             <input type="text" id="firstName" required oninput="updatePreview()">
                         </div>
                         <div class="form-group">
+                            <label for="middleInitial">M.I.</label>
+                            <input type="text" id="middleInitial" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
                             <label for="lastName">Last Name <span class="required">*</span></label>
                             <input type="text" id="lastName" required oninput="updatePreview()">
                         </div>
@@ -375,7 +379,7 @@
 
                     <div class="form-group">
                         <label for="credentials">Credentials (optional)</label>
-                        <input type="text" id="credentials" placeholder="M.Ed., Ph.D., etc." oninput="updatePreview()">
+                        <input type="text" id="credentials" placeholder="S.M., M.Ed., etc." oninput="updatePreview()">
                     </div>
 
                     <div class="form-group">
@@ -386,7 +390,7 @@
                     <hr class="divider">
 
                     <div class="option-section">
-                        <label>Logo</label>
+                        <label>Graphic</label>
                         <div class="radio-group">
                             <label class="radio-label">
                                 <input type="radio" name="logo" value="anniversary" checked>
@@ -498,6 +502,7 @@
         const inputs = {
             honorific: document.getElementById('honorific'),
             firstName: document.getElementById('firstName'),
+            middleInitial: document.getElementById('middleInitial'),
             lastName: document.getElementById('lastName'),
             credentials: document.getElementById('credentials'),
             position: document.getElementById('position'),
@@ -537,6 +542,13 @@
             return inputs.position.value.split('\n').map(l => l.trim()).filter(Boolean);
         }
 
+        // A lone initial gets a trailing period (A -> A.); a full middle name passes through unchanged.
+        function getMiddleInitial() {
+            let mi = inputs.middleInitial.value.trim();
+            if (/^[A-Za-z]$/.test(mi)) mi += '.';
+            return mi;
+        }
+
         function generateSignatureHTML() {
             const honorific = inputs.honorific.value;
             const firstName = inputs.firstName.value.trim();
@@ -548,7 +560,7 @@
             const logo = getSelectedLogo();
             const school = CONFIG.school;
 
-            const fullName = [honorific, firstName, lastName].filter(Boolean).join(' ');
+            const fullName = [honorific, firstName, getMiddleInitial(), lastName].filter(Boolean).join(' ');
             const nameWithCreds = credentials ? `${fullName}, ${credentials}` : fullName;
             const phoneWithExt = extension ? `${school.phone} ext. ${extension}` : school.phone;
             const positionHTML = positionLines.map(esc).join('<br>');
@@ -619,7 +631,7 @@
             const email = inputs.email.value.trim();
             const school = CONFIG.school;
 
-            const fullName = [honorific, firstName, lastName].filter(Boolean).join(' ');
+            const fullName = [honorific, firstName, getMiddleInitial(), lastName].filter(Boolean).join(' ');
             const nameWithCreds = credentials ? `${fullName}, ${credentials}` : fullName;
             const phoneWithExt = extension ? `${school.phone} ext. ${extension}` : school.phone;
 
