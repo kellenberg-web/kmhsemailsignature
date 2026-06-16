@@ -419,6 +419,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="alumniYear">Alumni Year (optional)</label>
+                        <select id="alumniYear" onchange="updatePreview()">
+                            <option value="">Select year</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="position">Title / Position / Department / etc. <span class="required">*</span></label>
                         <textarea id="position" rows="3" placeholder="One title per line." required oninput="updatePreview()"></textarea>
                     </div>
@@ -574,10 +581,22 @@
             middleInitial: document.getElementById('middleInitial'),
             lastName: document.getElementById('lastName'),
             credentials: document.getElementById('credentials'),
+            alumniYear: document.getElementById('alumniYear'),
             position: document.getElementById('position'),
             extension: document.getElementById('extension'),
             email: document.getElementById('email')
         };
+
+        // Populate the Alumni Year dropdown: 1988 (first graduating class) through 2030.
+        (function populateAlumniYears() {
+            const sel = inputs.alumniYear;
+            for (let y = 1988; y <= 2030; y++) {
+                const opt = document.createElement('option');
+                opt.value = String(y);
+                opt.textContent = String(y);
+                sel.appendChild(opt);
+            }
+        })();
 
         const logoRadios = document.querySelectorAll('input[name="logo"]');
 
@@ -623,6 +642,7 @@
             const firstName = inputs.firstName.value.trim();
             const lastName = inputs.lastName.value.trim();
             const credentials = inputs.credentials.value.trim();
+            const alumniYear = inputs.alumniYear.value;
             const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
@@ -658,6 +678,7 @@
                     </td>
                 </tr>
                 ${positionHTML ? `<tr><td style="color:#333333;padding-bottom:6px;">${positionHTML}</td></tr>` : ''}
+                ${alumniYear ? `<tr><td style="color:#333333;padding-bottom:6px;">Class of ${alumniYear}</td></tr>` : ''}
                 <tr>
                     <td style="font-weight:bold;color:${CONFIG.primaryColor};padding-bottom:2px;">Kellenberg Memorial</td>
                 </tr>
@@ -695,6 +716,7 @@
             const firstName = inputs.firstName.value.trim();
             const lastName = inputs.lastName.value.trim();
             const credentials = inputs.credentials.value.trim();
+            const alumniYear = inputs.alumniYear.value;
             const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
@@ -707,6 +729,7 @@
             let lines = ['--'];
             if (nameWithCreds) lines.push(nameWithCreds);
             positionLines.forEach(l => lines.push(l));
+            if (alumniYear) lines.push('Class of ' + alumniYear);
             lines.push('Kellenberg Memorial');
             lines.push(school.address);
             lines.push(school.cityStateZip);
