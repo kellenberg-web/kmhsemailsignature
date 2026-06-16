@@ -461,6 +461,11 @@
                         <label for="email">Email <span class="required">*</span></label>
                         <input type="email" id="email" placeholder="jsmith@kellenberg.org" required oninput="updatePreview()">
                     </div>
+
+                    <div class="form-group">
+                        <label for="customText">Quote or Custom Text (optional)</label>
+                        <textarea id="customText" rows="2" placeholder="A favorite quote or note. Appears below your signature." oninput="updatePreview()"></textarea>
+                    </div>
                 </div>
             </div>
 
@@ -584,7 +589,8 @@
             alumniYear: document.getElementById('alumniYear'),
             position: document.getElementById('position'),
             extension: document.getElementById('extension'),
-            email: document.getElementById('email')
+            email: document.getElementById('email'),
+            customText: document.getElementById('customText')
         };
 
         // Populate the Alumni Year dropdown: 1988 (first graduating class) through 2030.
@@ -646,6 +652,7 @@
             const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
+            const customText = inputs.customText.value.trim();
             const logo = getSelectedLogo();
             const school = CONFIG.school;
 
@@ -663,6 +670,9 @@
             const socialHTML = Object.entries(CONFIG.socials).map(([name, s], i, arr) =>
                 `<a href="${s.url}" target="_blank" style="text-decoration:none;${i < arr.length - 1 ? 'margin-right:8px;' : ''}"><img src="${s.icon}" alt="${name.charAt(0).toUpperCase() + name.slice(1)}" width="20" height="20" style="border:0;vertical-align:middle;"></a>`
             ).join('\n                ');
+
+            // Optional free text rendered beneath the whole signature (quote, verse, etc.)
+            const customLines = customText ? customText.split('\n').map(l => l.trim()).filter(Boolean).map(esc).join('<br>') : '';
 
             return `
 <table cellpadding="0" cellspacing="0" border="0" style="font-family:'Noto Sans',Arial,sans-serif;font-size:14px;line-height:1.5;color:#333333;">
@@ -708,6 +718,7 @@
         </td>
     </tr>
 </table>
+${customLines ? `<div style="padding-top:10px;font-family:'Noto Sans',Arial,sans-serif;font-size:12px;font-style:italic;color:#666666;line-height:1.4;">${customLines}</div>` : ''}
             `.trim();
         }
 
@@ -720,6 +731,7 @@
             const positionLines = getPositionLines();
             const extension = inputs.extension.value.trim();
             const email = inputs.email.value.trim();
+            const customText = inputs.customText.value.trim();
             const school = CONFIG.school;
 
             const fullName = [honorific, firstName, getMiddleInitial(), lastName].filter(Boolean).join(' ');
@@ -736,6 +748,11 @@
             lines.push(`P: ${phoneWithExt}`);
             if (email) lines.push(`E: ${email}`);
             lines.push(`W: ${CONFIG.websites.map(w => w.display).join(' | ')}`);
+
+            if (customText) {
+                lines.push('');
+                customText.split('\n').map(l => l.trim()).filter(Boolean).forEach(l => lines.push(l));
+            }
 
             return lines.join('\n');
         }
